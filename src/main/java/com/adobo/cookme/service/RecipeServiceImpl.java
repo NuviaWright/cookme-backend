@@ -1,12 +1,15 @@
 package com.adobo.cookme.service;
 
-import com.adobo.cookme.config.MealDb;
-import com.adobo.cookme.response.RecipeRes;
+import com.adobo.cookme.entity.Meal;
+import com.adobo.cookme.entity.MealPreview;
+import com.adobo.cookme.response.IRecipeRes;
+import com.adobo.cookme.response.MealPreviewRes;
+import com.adobo.cookme.response.MealRes;
 import com.adobo.cookme.response.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.springframework.core.env.Environment;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
@@ -18,21 +21,42 @@ public class RecipeServiceImpl implements RecipeService{
     private final RestTemplate restTemplate = new RestTemplate();
 
     @Autowired
-    private MealDb mealDb;
+    private Environment env;
+
 
     @Override
     public Response getRecipesByIngredients(String ingredients) {
-        logger.info("Starting getting recipes...");
-        Response res = new Response();
-        StringBuffer fullUrl = new StringBuffer();
-        fullUrl.append(mealDb.getUrl());
-        fullUrl.append(mealDb.getApiKey());
-        fullUrl.append("/filter.php?i=");
-        fullUrl.append(ingredients);
+        logger.trace("Starting getting recipes...");
 
-        ResponseEntity<RecipeRes> response;
+        StringBuffer url = new StringBuffer(env.getProperty("meal.db.url") + env.getProperty("meal.db.apikey"));
+        url.append("/filter.php?i=");
+        url.append(ingredients);
+
+        Response res = new Response();
+        IRecipeRes<MealPreview> response = new MealPreviewRes();
+        fetchData(url.toString(), res, response.getClass());
+        return res;
+    }
+
+    @Override
+    public Response getMealById(Long id) {
+        logger.trace("Getting meal...");
+
+        StringBuffer url = new StringBuffer(env.getProperty("meal.db.url") + env.getProperty("meal.db.apikey"));
+        url.append("/lookup.php?i=");
+        url.append(id.toString());
+
+        Response res = new Response();
+        IRecipeRes<Meal> response = new MealRes();
+        fetchData(url.toString(), res, response.getClass());
+        return res;
+    }
+
+    private <T> void fetchData(String url, Response res, Class<T> mealRes) {
+        logger.info("URL: " + url);
+
         try {
-            response = restTemplate.getForEntity(fullUrl.toString(), RecipeRes.class);
+            ResponseEntity<T> response = restTemplate.getForEntity(url, mealRes);
             res.setCode("OK");
             res.setResponse(response.getBody());
 
@@ -42,8 +66,11 @@ public class RecipeServiceImpl implements RecipeService{
             res.setMessage("Oops! Something went wrong. Please try again later.");
 
             logger.error("ERROR: " + e.getMessage());
-        }
+        } catch (Exception e) {
+            res.setCode("NG");
+            res.setMessage("Internal Error");
 
-        return res;
+            logger.error("ERROR: " + e.getMessage());
+        }
     }
 }

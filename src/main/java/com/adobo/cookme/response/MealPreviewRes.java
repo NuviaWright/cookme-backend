@@ -4,16 +4,18 @@ import com.adobo.cookme.entity.MealPreview;
 
 import java.util.List;
 
-public class RecipeRes {
+public class MealPreviewRes implements IRecipeRes<MealPreview>{
     private List<MealPreview> meals;
 
-    public RecipeRes() {
+    public MealPreviewRes() {
     }
 
+    @Override
     public List<MealPreview> getMeals() {
-        return meals;
+        return this.meals;
     }
 
+    @Override
     public void setMeals(List<MealPreview> meals) {
         this.meals = meals;
     }

@@ -1,12 +1,15 @@
 package com.adobo.cookme.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
-@ConfigurationProperties(prefix = "meal.db")
-@Configuration("mealDbProperties")
 public class MealDb {
+
+    @Value("${meal.db.url}")
     private String url;
+
+    @Value("${meal.db.apiKey}")
     private String apiKey;
 
     public MealDb() {

@@ -21,4 +21,10 @@ public class RecipeFinderController {
         logger.trace("Ingredient: " + ingredients);
         return recipeService.getRecipesByIngredients(ingredients);
     }
+
+    @GetMapping("meal/{mealId}")
+    public Response getMeal(@PathVariable("mealId") Long id) {
+        logger.trace("MealId: " + id);
+        return recipeService.getMealById(id);
+    }
 }
