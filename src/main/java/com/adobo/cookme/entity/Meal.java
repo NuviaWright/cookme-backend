@@ -8,7 +8,7 @@ public class Meal {
     private String strMealThumb;
     private String strCategory;
     private String strArea;
-    private String strInstruction;
+    private String strInstructions;
     private String strTags;
     private String strYoutube;
     private String strIngredient1;
@@ -99,12 +99,12 @@ public class Meal {
         this.strArea = strArea;
     }
 
-    public String getStrInstruction() {
-        return strInstruction;
+    public String getStrInstructions() {
+        return strInstructions;
     }
 
-    public void setStrInstruction(String strInstruction) {
-        this.strInstruction = strInstruction;
+    public void setStrInstructions(String strInstructions) {
+        this.strInstructions = strInstructions;
     }
 
     public String getStrTags() {
