@@ -4,7 +4,7 @@ import com.adobo.cookme.entity.Meal;
 
 import java.util.List;
 
-public class MealRes implements IRecipeRes<Meal> {
+public class MealRes implements IMealDbRes<Meal> {
     private List<Meal> meals;
 
     public MealRes() {

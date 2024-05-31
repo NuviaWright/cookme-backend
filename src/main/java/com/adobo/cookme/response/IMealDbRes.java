@@ -1,10 +1,8 @@
 package com.adobo.cookme.response;
 
-import com.adobo.cookme.entity.MealPreview;
-
 import java.util.List;
 
-public interface IRecipeRes<T> {
+public interface IMealDbRes<T> {
     List<T> getMeals();
     void setMeals(List<T> meals);
 }
