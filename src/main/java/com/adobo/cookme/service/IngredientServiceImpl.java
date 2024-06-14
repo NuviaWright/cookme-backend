@@ -17,8 +17,6 @@ import java.util.List;
 public class IngredientServiceImpl implements IngredientService{
     Logger logger = LoggerFactory.getLogger(IngredientServiceImpl.class);
 
-    private final MealDb mealDb = new MealDb();
-
     @Autowired
     private Environment env;
 
@@ -26,12 +24,11 @@ public class IngredientServiceImpl implements IngredientService{
     public Response getAvailableIngredients() {
         logger.trace("Getting all ingredients...");
 
-        StringBuffer url = new StringBuffer(env.getProperty("meal.db.url") + env.getProperty("meal.db.apikey"));
-        url.append("/list.php?i=list");
-
         Response res = new Response();
-        IMealDbRes<IngredientList> response = new IngredientRes();
-        mealDb.fetchData(url.toString(), res, response.getClass());
+        IMealDbRes<IngredientList> ingredientRes = new IngredientRes();
+        MealDb mealDb = new MealDb();
+
+        mealDb.fetchIngredients(res, ingredientRes.getClass());
 
         return res;
     }

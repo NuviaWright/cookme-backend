@@ -1,46 +1,40 @@
 package com.adobo.cookme.config;
 
 import com.adobo.cookme.response.Response;
-import com.adobo.cookme.service.IngredientServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 public class MealDb {
     Logger logger = LoggerFactory.getLogger(MealDb.class);
-    private final RestTemplate restTemplate = new RestTemplate();
-
-    @Value("${meal.db.url}")
-    private String url;
-
-    @Value("${meal.db.apiKey}")
-    private String apiKey;
+    private final String url = "https://www.themealdb.com/api/json/v1/";
+    private final String apiKey = "1";
+    private final StringBuffer ingredientsUrl = new StringBuffer(this.getUrl())
+            .append(this.getApiKey())
+            .append("/list.php?i=list");
+    private final StringBuffer recipesUrl = new StringBuffer(this.getUrl())
+            .append(this.getApiKey())
+            .append("/filter.php?i=");
+    private final StringBuffer mealUrl = new StringBuffer(this.getUrl())
+            .append(this.getApiKey())
+            .append("/lookup.php?i=");
 
     public MealDb() {
     }
 
     public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
+        return this.url;
     }
 
     public String getApiKey() {
         return apiKey;
     }
 
-    public void setApiKey(String apiKey) {
-        this.apiKey = apiKey;
-    }
-
-    public <T> void fetchData(String url, Response res, Class<T> mealRes) {
+    private <T> void fetchData(String url, Response res, Class<T> mealRes) {
+        Logger logger = LoggerFactory.getLogger(MealDb.class);
+        RestTemplate restTemplate = new RestTemplate();
         logger.info("URL: " + url);
 
         try {
@@ -60,5 +54,30 @@ public class MealDb {
 
             logger.error("ERROR: " + e.getMessage());
         }
+    }
+
+    public <T> void fetchIngredients(Response res, Class<T> mealRes) {
+        this.fetchData(this.ingredientsUrl.toString(), res, mealRes);
+    }
+
+    public <T> void fetchRecipes(String ingredients, Response res, Class<T> mealRes) {
+        StringBuffer newRecipeUrl = this.recipesUrl;
+        newRecipeUrl.append(ingredients);
+
+        this.fetchData(newRecipeUrl.toString(), res, mealRes);
+    }
+
+    public <T> void fetchMeal(String id, Response res, Class<T> mealRes) {
+        StringBuffer newMealUrl = this.mealUrl;
+        newMealUrl.append(id);
+
+        this.fetchData(newMealUrl.toString(), res, mealRes);
+    }
+
+    public <T> void fetchMeal(Long id, Response res, Class<T> mealRes) {
+        StringBuffer newMealUrl = this.mealUrl;
+        newMealUrl.append(id.toString());
+
+        this.fetchData(newMealUrl.toString(), res, mealRes);
     }
 }

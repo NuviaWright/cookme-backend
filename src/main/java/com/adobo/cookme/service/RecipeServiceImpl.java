@@ -17,23 +17,15 @@ import org.springframework.stereotype.Service;
 public class RecipeServiceImpl implements RecipeService{
     Logger logger = LoggerFactory.getLogger(RecipeServiceImpl.class);
 
-    private final MealDb mealDb = new MealDb();
-
-    @Autowired
-    private Environment env;
-
-
     @Override
     public Response getRecipesByIngredients(String ingredients) {
         logger.trace("Starting getting recipes...");
 
-        StringBuffer url = new StringBuffer(env.getProperty("meal.db.url") + env.getProperty("meal.db.apikey"));
-        url.append("/filter.php?i=").append(ingredients);
-
         Response res = new Response();
-        IMealDbRes<MealPreview> response = new MealPreviewRes();
+        IMealDbRes<MealPreview> mealPreviewRes = new MealPreviewRes();
+        MealDb mealDb = new MealDb();
 
-        mealDb.fetchData(url.toString(), res, response.getClass());
+        mealDb.fetchRecipes(ingredients, res, mealPreviewRes.getClass());
         return res;
     }
 
@@ -41,13 +33,11 @@ public class RecipeServiceImpl implements RecipeService{
     public Response getMealById(Long id) {
         logger.trace("Getting meal...");
 
-        StringBuffer url = new StringBuffer(env.getProperty("meal.db.url") + env.getProperty("meal.db.apikey"));
-        url.append("/lookup.php?i=");
-        url.append(id.toString());
-
         Response res = new Response();
-        IMealDbRes<Meal> response = new MealRes();
-        mealDb.fetchData(url.toString(), res, response.getClass());
+        IMealDbRes<Meal> mealRes = new MealRes();
+        MealDb mealDb = new MealDb();
+
+        mealDb.fetchMeal(id, res, mealRes.getClass());
         return res;
     }
 }
