@@ -11,25 +11,17 @@ public class MealDb {
     Logger logger = LoggerFactory.getLogger(MealDb.class);
     private final String url = "https://www.themealdb.com/api/json/v1/";
     private final String apiKey = "1";
-    private final StringBuffer ingredientsUrl = new StringBuffer(this.getUrl())
-            .append(this.getApiKey())
+    private final StringBuffer ingredientsUrl = new StringBuffer(this.url)
+            .append(this.apiKey)
             .append("/list.php?i=list");
-    private final StringBuffer recipesUrl = new StringBuffer(this.getUrl())
-            .append(this.getApiKey())
+    private final StringBuffer recipesUrl = new StringBuffer(this.url)
+            .append(this.apiKey)
             .append("/filter.php?i=");
-    private final StringBuffer mealUrl = new StringBuffer(this.getUrl())
-            .append(this.getApiKey())
+    private final StringBuffer mealUrl = new StringBuffer(this.url)
+            .append(this.apiKey)
             .append("/lookup.php?i=");
 
     public MealDb() {
-    }
-
-    public String getUrl() {
-        return this.url;
-    }
-
-    public String getApiKey() {
-        return apiKey;
     }
 
     private <T> void fetchData(String url, Response res, Class<T> mealRes) {
