@@ -14,8 +14,6 @@ public class RecipeServiceImpl implements RecipeService{
 
     @Override
     public Response getRecipesByIngredients(String ingredients) {
-        logger.trace("Starting getting recipes...");
-
         Response res = new Response();
         MealPreviewRes mealPreviewRes = new MealPreviewRes();
         MealDb mealDb = new MealDb();
@@ -26,8 +24,6 @@ public class RecipeServiceImpl implements RecipeService{
 
     @Override
     public Response getMealById(Long id) {
-        logger.trace("Getting meal...");
-
         Response res = new Response();
         MealRes mealRes = new MealRes();
         MealDb mealDb = new MealDb();

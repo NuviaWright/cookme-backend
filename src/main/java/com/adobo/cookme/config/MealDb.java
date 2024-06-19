@@ -34,7 +34,7 @@ public class MealDb {
             res.setCode("OK");
             res.setResponse(response.getBody());
 
-            logger.trace("STATUS:" + response.getStatusCode());
+            logger.info("STATUS:" + response.getStatusCode());
         } catch (RestClientException e) {
             res.setCode("NG");
             res.setMessage("Oops! Something went wrong. Please try again later.");

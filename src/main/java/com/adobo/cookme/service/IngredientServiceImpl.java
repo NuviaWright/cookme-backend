@@ -18,8 +18,6 @@ public class IngredientServiceImpl implements IngredientService{
 
     @Override
     public Response getAvailableIngredients() {
-        logger.trace("Getting all ingredients...");
-
         Response res = new Response();
         IngredientRes ingredientRes = new IngredientRes();
         MealDb mealDb = new MealDb();

@@ -18,13 +18,15 @@ public class RecipeFinderController {
 
     @GetMapping("find/{ingredient}")
     public Response getRecipes(@PathVariable("ingredient") String ingredients) {
-        logger.info("recipe/find/" + ingredients);
+        logger.trace("--------------------------------------------------------");
+        logger.trace("[RecipeFinderController][getRecipes]");
         return recipeService.getRecipesByIngredients(ingredients);
     }
 
     @GetMapping("meal/{mealId}")
     public Response getMeal(@PathVariable("mealId") Long id) {
-        logger.info("meal/" + id);
+        logger.trace("--------------------------------------------------------");
+        logger.trace("[RecipeFinderController][getMeal]");
         return recipeService.getMealById(id);
     }
 }
