@@ -29,7 +29,7 @@
             daily and when file size is 10MB-->
         <rollingPolicy
                 class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${LOG_PATH}/archived/${LOG_FILE_NAME}-%d{yyyy-MM-dd}.%i.log
+            <fileNamePattern>${LOG_PATH}/archived/${LOG_FILE_NAME}-%i-%d{yyyy-MM-dd}.log
             </fileNamePattern>
             <timeBasedFileNamingAndTriggeringPolicy
                     class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
