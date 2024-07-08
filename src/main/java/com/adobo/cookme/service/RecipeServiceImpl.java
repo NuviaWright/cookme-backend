@@ -1,6 +1,8 @@
 package com.adobo.cookme.service;
 
-import com.adobo.cookme.config.MealDb;
+import com.adobo.cookme.api.MealDb;
+import com.adobo.cookme.entity.MealPreview;
+import com.adobo.cookme.response.AResponse;
 import com.adobo.cookme.response.MealPreviewRes;
 import com.adobo.cookme.response.MealRes;
 import com.adobo.cookme.response.Response;
@@ -29,6 +31,16 @@ public class RecipeServiceImpl implements RecipeService{
         MealDb mealDb = new MealDb();
 
         mealDb.fetchMeal(id, res, mealRes.getClass());
+        return res;
+    }
+
+    @Override
+    public Response getRecipesByIngredients(String ingredients, int page, int size) {
+        Response res = new Response();
+        MealPreviewRes mealRes = new MealPreviewRes();
+        MealDb mealDb = new MealDb();
+
+        mealDb.fetchRecipes(ingredients, res, mealRes.getClass(), page, size);
         return res;
     }
 }

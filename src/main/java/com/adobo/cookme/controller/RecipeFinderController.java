@@ -29,4 +29,11 @@ public class RecipeFinderController {
         logger.trace("[RecipeFinderController][getMeal]");
         return recipeService.getMealById(id);
     }
+
+    @GetMapping("find/page/{ingredient}")
+    public Response getPaginatedRecipes(@PathVariable("ingredient") String ingredients, @RequestParam("page") int page, @RequestParam("size") int size) {
+        logger.trace("--------------------------------------------------------");
+        logger.trace("[RecipeFinderController][getPaginatedRecipes]");
+        return recipeService.getRecipesByIngredients(ingredients, page, size);
+    }
 }

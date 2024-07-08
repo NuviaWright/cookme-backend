@@ -1,6 +1,6 @@
 package com.adobo.cookme.service;
 
-import com.adobo.cookme.config.MealDb;
+import com.adobo.cookme.api.MealDb;
 import com.adobo.cookme.response.IngredientRes;
 import com.adobo.cookme.response.Response;
 import org.slf4j.Logger;
