@@ -1,5 +1,8 @@
 package com.adobo.cookme.response;
 
+import org.springframework.stereotype.Component;
+
+@Component("response")
 public class Response {
     private Object response;
     private String message;
@@ -8,6 +11,11 @@ public class Response {
     public Response() {
     }
 
+    public Response(Object response, String message, String code) {
+        this.response = response;
+        this.message = message;
+        this.code = code;
+    }
 
     public Object getResponse() {
         return response;
@@ -18,7 +26,7 @@ public class Response {
     }
 
     public String getMessage() {
-        return message;
+        return this.message;
     }
 
     public void setMessage(String message) {
@@ -26,7 +34,7 @@ public class Response {
     }
 
     public String getCode() {
-        return code;
+        return this.code;
     }
 
     public void setCode(String code) {
