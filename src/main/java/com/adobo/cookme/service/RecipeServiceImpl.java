@@ -39,7 +39,6 @@ public class RecipeServiceImpl implements RecipeService{
     public Response getRecipesByIngredients(String ingredients, int page, int size) {
         logger.trace("Line {}: [RecipeServiceImpl][getRecipesByIngredients]", Thread.currentThread().getStackTrace()[1].getLineNumber());
 
-
         return mealDb.fetchRecipes(ingredients, MealDbPaginatedRes.class, page, size);
     }
 }
