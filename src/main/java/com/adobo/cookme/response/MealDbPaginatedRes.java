@@ -4,10 +4,10 @@ import com.adobo.cookme.entity.MealPreview;
 
 import java.util.List;
 
-public class RecipeRes {
+public class MealDbPaginatedRes implements PaginatedResponse {
     private List<MealPreview> meals;
 
-    public RecipeRes() {
+    public MealDbPaginatedRes() {
     }
 
     public List<MealPreview> getMeals() {
@@ -16,5 +16,15 @@ public class RecipeRes {
 
     public void setMeals(List<MealPreview> meals) {
         this.meals = meals;
+    }
+
+    @Override
+    public int getSize() {
+        return meals.size();
+    }
+
+    @Override
+    public List<?> getPaginatedList(int start, int end) {
+        return this.meals.subList(start, end);
     }
 }

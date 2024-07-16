@@ -1,49 +1,44 @@
 package com.adobo.cookme.service;
 
-import com.adobo.cookme.config.MealDb;
-import com.adobo.cookme.response.RecipeRes;
-import com.adobo.cookme.response.Response;
+import com.adobo.cookme.api.MealDb;
+import com.adobo.cookme.entity.Meal;
+import com.adobo.cookme.entity.MealPreview;
+import com.adobo.cookme.response.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestClientException;
-import org.springframework.web.client.RestTemplate;
 
 @Service
 public class RecipeServiceImpl implements RecipeService{
     Logger logger = LoggerFactory.getLogger(RecipeServiceImpl.class);
-    private final RestTemplate restTemplate = new RestTemplate();
 
     @Autowired
     private MealDb mealDb;
 
+    @Autowired
+    private Response res;
+
     @Override
     public Response getRecipesByIngredients(String ingredients) {
-        logger.info("Starting getting recipes...");
-        Response res = new Response();
-        StringBuffer fullUrl = new StringBuffer();
-        fullUrl.append(mealDb.getUrl());
-        fullUrl.append(mealDb.getApiKey());
-        fullUrl.append("/filter.php?i=");
-        fullUrl.append(ingredients);
+        logger.trace("Line {}: [RecipeServiceImpl][getRecipesByIngredients]", Thread.currentThread().getStackTrace()[1].getLineNumber());
 
-        ResponseEntity<RecipeRes> response;
-        try {
-            response = restTemplate.getForEntity(fullUrl.toString(), RecipeRes.class);
-            res.setCode("OK");
-            res.setResponse(response.getBody());
+        MealDbRes<MealPreview> mealRes = new MealDbRes<>();
+        return mealDb.fetchRecipes(ingredients, mealRes.getClass());
+    }
 
-            logger.trace("STATUS:" + response.getStatusCode());
-        } catch (RestClientException e) {
-            res.setCode("NG");
-            res.setMessage("Oops! Something went wrong. Please try again later.");
+    @Override
+    public Response getMealById(Long id) {
+        logger.trace("Line {}: [RecipeServiceImpl][getMealById]", Thread.currentThread().getStackTrace()[1].getLineNumber());
 
-            logger.error("ERROR: " + e.getMessage());
-        }
+        MealDbRes<Meal> mealRes = new MealDbRes<>();
+        return mealDb.fetchMeal(id, mealRes.getClass());
+    }
 
-        return res;
+    @Override
+    public Response getRecipesByIngredients(String ingredients, int page, int size) {
+        logger.trace("Line {}: [RecipeServiceImpl][getRecipesByIngredients]", Thread.currentThread().getStackTrace()[1].getLineNumber());
+
+        return mealDb.fetchRecipes(ingredients, MealDbPaginatedRes.class, page, size);
     }
 }
