@@ -8,7 +8,8 @@ mvn spring-boot:run
 ```
 2. If not, you can run the server using `mvn spring-boot:run`.
 
-The developer is using a third-party API called [TheMealDB](https://www.themealdb.com/) to get all the recipes and ingredients. The project is not yet complete because the developer is thinking if he will subscribe for the additional features that he clearly needs.
+----------
+The developer is using a third-party API called [TheMealDB](https://www.themealdb.com/) to get all the recipes and ingredients. The project is not yet complete because the developer is thinking if he will subscribe for the additional features that he clearly needs. Or he will stop being lazy and find any free third-party API or any data that he can get online.
 
 Future features:
 
