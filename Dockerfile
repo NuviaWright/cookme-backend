@@ -1,9 +1,9 @@
 FROM openjdk:22-jdk AS builder
 
 # install necessary... things
-RUN apk update && apk upgrade
-RUN apk add maven
-RUN apk add git
+RUN apt-get update && apt-get upgrade
+RUN apt-get install maven
+RUN apt-get install git
 
 # clone github
 RUN mkdir /cookme-backend
