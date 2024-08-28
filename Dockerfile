@@ -1,9 +1,14 @@
-FROM openjdk:22-oracle AS builder
+FROM ubuntu:latest AS builder
 
-# install necessary... things
-RUN yum update
-RUN yum install maven
-RUN yum install git
+# update apt-get
+RUN apt-get update -y && apt-get upgrade -y
+
+# install java 21 in oracle cuz why not
+RUN apt-get install openjdk-21-jdk -y
+
+# install maven and git
+RUN apt-get install maven -y
+RUN apt-get install git -y
 
 # clone github
 RUN mkdir /cookme-backend
@@ -17,10 +22,7 @@ RUN git switch dev
 RUN mvn clean install
 
 # build release image
-FROM openjdk:22-jdk
+FROM openjdk:21-jdk
 COPY --from=builder /cookme-backend/target/cookme-0.0.1-SNAPSHOT.jar cookme.jar
-
-RUN addgroup -S appgroup && adduser -S appuser -G appgroup
-USER appuser
 
 ENTRYPOINT ["java", "-jar", "/cookme.jar"]
