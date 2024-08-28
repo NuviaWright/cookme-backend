@@ -1,4 +1,4 @@
-FROM openjdk:22-jdk AS builder
+FROM openjdk:22-oracle AS builder
 
 # install necessary... things
 RUN apt-get update && apt-get upgrade
