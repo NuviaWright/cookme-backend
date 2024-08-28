@@ -1,9 +1,9 @@
 FROM openjdk:22-oracle AS builder
 
 # install necessary... things
-RUN apt-get update && apt-get upgrade
-RUN apt-get install maven
-RUN apt-get install git
+RUN apk update && apk upgrade
+RUN apk add maven
+RUN apk add git
 
 # clone github
 RUN mkdir /cookme-backend
