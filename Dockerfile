@@ -1,12 +1,10 @@
-FROM ubuntu:latest AS builder
+FROM eclipse-temurin:22.0.2_9-jdk AS builder
 
 # update apt-get
 RUN apt-get update -y && apt-get upgrade -y
 
-# install java 21 in oracle cuz why not
-RUN apt-get install openjdk-21-jdk -y
-
-# install maven and git
+# install java, maven and git
+#RUN apt-get install openjdk-21-jdk -y
 RUN apt-get install maven -y
 RUN apt-get install git -y
 
@@ -22,7 +20,7 @@ RUN git switch dev
 RUN mvn clean install
 
 # build release image
-FROM openjdk:21-jdk
+FROM eclipse-temurin:22.0.2_9-jdk
 COPY --from=builder /cookme-backend/target/cookme-0.0.1-SNAPSHOT.jar cookme.jar
 
 ENTRYPOINT ["java", "-jar", "/cookme.jar"]
