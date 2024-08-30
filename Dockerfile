@@ -4,7 +4,6 @@ FROM eclipse-temurin:22.0.2_9-jdk AS builder
 RUN apt-get update -y && apt-get upgrade -y
 
 # install java, maven and git
-#RUN apt-get install openjdk-21-jdk -y
 RUN apt-get install maven -y
 RUN apt-get install git -y
 

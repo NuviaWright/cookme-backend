@@ -1,7 +1,7 @@
 version: "3.8"
 services:
-  cookme-backend:
+  backend:
     image: nuvia08/cookme-backend:dev
     build: https://github.com/NuviaWright/cookme-backend.git#dev
     ports:
-      - '8081:8081'
+      - '8083:8081'
