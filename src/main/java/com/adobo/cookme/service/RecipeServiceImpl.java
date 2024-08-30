@@ -32,12 +32,9 @@ public class RecipeServiceImpl implements RecipeService{
                 .strip()
                 .replace(" ", "_");
         try {
-            List<MealPreview> mealPreviews = mealDb.fetchRecipes(ing);
+            MealDbRes<MealPreview> mealPreviews = mealDb.fetchRecipes(ing);
 
-            MealDbRes<MealPreview> mealDbRes = new MealDbRes<>();
-            mealDbRes.setMeals(mealPreviews);
-
-            res.setResponse(mealDbRes);
+            res.setResponse(mealPreviews);
             res.setCode("OK");
         } catch (Exception e) {
             res.setCode("NG");
@@ -52,12 +49,9 @@ public class RecipeServiceImpl implements RecipeService{
         logger.trace("Line {}: [RecipeServiceImpl][getMealById]", Thread.currentThread().getStackTrace()[1].getLineNumber());
 
         try {
-            List<Meal> meals = mealDb.fetchMeal(id);
+            MealDbRes<Meal> meals = mealDb.fetchMeal(id);
 
-            MealDbRes<Meal> mealDbRes = new MealDbRes<>();
-            mealDbRes.setMeals(meals);
-
-            res.setResponse(mealDbRes);
+            res.setResponse(meals);
             res.setCode("OK");
         } catch (Exception e) {
             res.setCode("NG");

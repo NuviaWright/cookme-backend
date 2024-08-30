@@ -1,8 +1,5 @@
 package com.adobo.cookme.api;
 
-import com.adobo.cookme.entity.IngredientList;
-import com.adobo.cookme.entity.Meal;
-import com.adobo.cookme.entity.MealPreview;
 import com.adobo.cookme.exception.MealDbException;
 import com.adobo.cookme.response.*;
 import lombok.extern.slf4j.Slf4j;
@@ -19,8 +16,6 @@ import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
-
-import java.util.List;
 
 @Component("mealDb")
 @Slf4j
@@ -83,10 +78,11 @@ public class MealDb {
         }
     }
 
-    private <T> List<T> fetchData(UriComponents uri) throws MealDbException {
+    private <T> MealDbRes<T> fetchData(UriComponents uri) throws MealDbException {
         log.info("URL: {}", uri);
         try {
-            ResponseEntity<List<T>> responseEntity = restTemplate.exchange(uri.toString(), HttpMethod.GET, null, new ParameterizedTypeReference<List<T>>() {});
+            ResponseEntity<MealDbRes<T>> responseEntity = restTemplate.exchange(uri.toString(), HttpMethod.GET, null, new ParameterizedTypeReference<MealDbRes<T>>() {
+            });
 
             log.info("STATUS:" + responseEntity.getStatusCode());
             return responseEntity.getBody();
@@ -99,7 +95,7 @@ public class MealDb {
         }
     }
 
-    public List<IngredientList> fetchIngredients() throws MealDbException {
+    public <T> MealDbRes<T> fetchIngredients() throws MealDbException {
         UriComponents uri = UriComponentsBuilder.fromHttpUrl(this.url)
                 .path(this.apiKey)
                 .path("/list.php")
@@ -109,18 +105,17 @@ public class MealDb {
         return this.fetchData(uri);
     }
 
-    public List<MealPreview> fetchRecipes(String ingredients) throws MealDbException {
+    public <T> MealDbRes<T> fetchRecipes(String ingredients) throws MealDbException {
         UriComponents recipesUrl = UriComponentsBuilder.fromHttpUrl(this.url)
                 .path(this.apiKey)
                 .path("/filter.php")
                 .queryParam("i", ingredients)
                 .build();
 
-        MealDbRes<MealPreview> mealRes = new MealDbRes<>();
         return this.fetchData(recipesUrl);
     }
 
-    public List<Meal> fetchMeal(Long id) throws MealDbException {
+    public <T> MealDbRes<T> fetchMeal(Long id) throws MealDbException {
         UriComponents mealUrl = UriComponentsBuilder.fromHttpUrl(this.url)
                 .path(this.apiKey)
                 .path("/lookup.php")

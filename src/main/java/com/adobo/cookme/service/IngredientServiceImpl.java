@@ -30,22 +30,11 @@ public class IngredientServiceImpl implements IngredientService{
     @Override
     public Response getAvailableIngredients() {
         try{
-            List<IngredientList> ingredientLists = mealDb.fetchIngredients();
+            MealDbRes<IngredientList> ingredientLists = mealDb.fetchIngredients();
 
-            MealDbRes<IngredientList> mealDbRes = new MealDbRes<>();
-            mealDbRes.setMeals(ingredientLists);
-
-            res.setResponse(mealDbRes);
+            res.setResponse(ingredientLists);
             res.setCode("OK");
         }catch (Exception e) {
-
-        }
-
-
-        try{
-            res.setResponse(mealDb.fetchIngredients());
-            res.setCode("OK");
-        } catch (Exception e) {
             res.setCode("NG");
             res.setMessage(e.getMessage());
         }
