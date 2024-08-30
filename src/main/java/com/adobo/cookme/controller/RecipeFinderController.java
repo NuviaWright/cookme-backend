@@ -7,6 +7,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping(value = "recipe/")
@@ -36,4 +38,5 @@ public class RecipeFinderController {
         logger.trace("[RecipeFinderController][getPaginatedRecipes]");
         return recipeService.getRecipesByIngredients(ingredients, page, size);
     }
+
 }
